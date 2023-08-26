@@ -12,14 +12,27 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 
+const getResulation = (formats) => {
+  let resuArray = [];
+
+  for (let i = 0; i < formats.length; i++) {
+    if (formats[i].qualityLabel !== null) {
+      resuArray.push(formats[i]); //filter thats resulation value null
+    }
+  }
+
+  return [...new Set(resuArray.map((v) => v.height))];
+};
+
 app.get("/api/get-video-info/:videoId", async (req, res) => {
   // console.log(req.params);
   const { videoId } = req.params;
-  const data = await ytdl.getInfo(videoId);
-  console.log(data);
+  const { videoDetails, formats } = await ytdl.getInfo(videoId);
+  // console.log(data);
 
   // const { title, thumbnails } = videoDetails;
-  // const videoResu = getResu(formats);
+  const videoResulation = getResulation(formats);
+  console.log(videoResulation);
 
   // return res.status(200).json({
   //   videoInfo: {
