@@ -1,0 +1,1 @@
+ytdl-core = get details youtube vedio information from id
