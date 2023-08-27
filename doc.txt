@@ -1,1 +1,4 @@
 ytdl-core = get details youtube vedio information from id
+loadsh = all js functions includs this pakage
+ffmpeg-static = manupulate vedio file
+child_process = use for ffmpeg vedio process
