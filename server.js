@@ -12,6 +12,10 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 // ......filter getResulation.....
 
 const getResulation = (formats) => {
@@ -27,26 +31,6 @@ const getResulation = (formats) => {
 };
 
 // ......get all vedio info.....
-
-app.get("/api/get-video-info/:videoId", async (req, res) => {
-  const { videoId } = req.params;
-  // console.log(videoId);
-  const { videoDetails, formats } = await ytdl.getInfo(videoId);
-  // console.log(data);
-
-  const { title, thumbnails } = videoDetails;
-  const videoResulation = getResulation(formats);
-  // console.log(videoResulation);
-
-  return res.status(200).json({
-    videoInfo: {
-      title,
-      thumbnailUrl: thumbnails[thumbnails.length - 1].url,
-      videoResulation,
-      lastResulation: videoResulation[0],
-    },
-  });
-});
 
 // ......route for vedio download.....
 
@@ -151,13 +135,26 @@ app.get("/video-download", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/api/get-video-info/:videoId", async (req, res) => {
+  const { videoId } = req.params;
+  // console.log(videoId);
+  const { videoDetails, formats } = await ytdl.getInfo(videoId);
+  // console.log(data);
+
+  const { title, thumbnails } = videoDetails;
+  const videoResulation = getResulation(formats);
+  // console.log(videoResulation);
+
+  return res.status(200).json({
+    videoInfo: {
+      title,
+      thumbnailUrl: thumbnails[thumbnails.length - 1].url,
+      videoResulation,
+      lastResulation: videoResulation[0],
+    },
+  });
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-// https://youtu.be/Rzu5-B9A0zM?list=PLTyDDs5BP9JTc7X37KpiiHkjiA84Y7V1B
-// https://youtu.be/aaUPipGCHSA?list=PLTyDDs5BP9JQIAnJ_IG_wjqGXZtDAvN9T
